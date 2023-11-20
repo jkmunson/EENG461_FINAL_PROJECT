@@ -20,10 +20,7 @@
 /*
  * The variable start will be used to decide which path the functions take when they are called. If start is 1 the
  * functions will take the necessary steps to configure. If start is 0 the functions will proceed with their intended
- * processes.
- *
- * Wheels.c is not called in main as it will be called by Driving.c when Driving.c has finished its tasks and is ready
- * to pass on values to Wheels.c
+ * processes. So far this is only applicable to Wheels.c
  *
  * I have only included the most relevant files. The files such as Horn.h and Lights.h will need to be added to the include
  * list and to main should there be enough time.
@@ -34,21 +31,18 @@ uint_8 start;
 int main(void)
 {
     /*
-     * Configuration of the necessary peripherals
+     * Configuration of the necessary peripherals.
+     * Radio.c will enable interrupts once it is done configuring and will not need to be called again.
      */
     start = 1;
-    Driving(start);
-    Lidar_recieve(start);
-    Radio(start);
+    Wheels(start);
+    Radio();
     start = 0
 
     /*
-     * Infinite loop that will repeatedly call the functions to check for changes. This method may need to be changed for
-     * Lidar_recieve.c and Radio.c as time capture and I2C communications may take longer than this loop will allow.
+     * Infinite loop that will repeatedly call Driving.c to update it.
      */
 	while(1){
-	    Lidar_recieve(start);
-	    Radio(start);
 	    Driving(start);
 	}
 }
