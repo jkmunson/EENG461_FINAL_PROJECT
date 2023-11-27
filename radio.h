@@ -30,19 +30,19 @@
 
 // .:*~*:._.:*~*:._.:*~*:._.:*~*:. Variables  .:*~*:._.:*~*:._.:*~*:._.:*~*:.
 
-uint32_t r_edge[4];                         // rising edge clock time for {PD0, PD1, PD2, PD3}
-uint32_t f_edge[4];                         // falling edge clock time for {PD0, PD1, PD2, PD3}
-uint32_t clock_cycles[4] = {0, 0, 0, 0};    // clock cycles from rising to falling edge {PD0, PD1, PD2, PD3}
-uint32_t micro_sec[4] = {0, 0, 0, 0};       // time in microseconds from rising to falling edge {PD0, PD1, PD2, PD3}
-bool calc_cycles[4] = {false, false, false, false}; // determines when to calculate pulse width {PD0, PD1, PD2, PD3}
+extern uint32_t r_edge[4];                         // rising edge clock time for {PD0, PD1, PD2, PD3}
+extern uint32_t f_edge[4];                         // falling edge clock time for {PD0, PD1, PD2, PD3}
+extern uint32_t clock_cycles[4];    // clock cycles from rising to falling edge {PD0, PD1, PD2, PD3}
+extern uint32_t micro_sec[4];       // time in microseconds from rising to falling edge {PD0, PD1, PD2, PD3}
+extern bool calc_cycles[4]; // determines when to calculate pulse width {PD0, PD1, PD2, PD3}
 
-uint8_t throttle = 0; // range from 0-20, used for wheel control
-uint8_t turning = 0;  // range from 0-20, used for wheel control
+extern uint8_t throttle; // range from 0-20, used for wheel control
+extern uint8_t turning;  // range from 0-20, used for wheel control
 
-bool alternate_functions[4] = {false, false, false, false}; // indicates whether alternate function is enabled {alt1, alt2, , PD3}
-uint8_t alt_func_count[4] = {0, 0, 0, 0};
-uint8_t alt_func_delay = 2;
+extern bool alternate_functions[4]; // indicates whether alternate function is enabled {alt1, alt2, , PD3}
+extern uint8_t alt_func_count[4];
+extern uint8_t alt_func_delay;
 
-uint32_t t1 = 0;
-uint32_t t2 = 0;
-uint32_t t = 69;
+extern uint32_t t1;
+extern uint32_t t2;
+extern uint32_t t;

@@ -14,13 +14,34 @@
 
 #include "radio.h"
 
+uint32_t r_edge[4];                         // rising edge clock time for {PD0, PD1, PD2, PD3}
+uint32_t f_edge[4];                         // falling edge clock time for {PD0, PD1, PD2, PD3}
+uint32_t clock_cycles[4] = {0, 0, 0, 0};    // clock cycles from rising to falling edge {PD0, PD1, PD2, PD3}
+uint32_t micro_sec[4] = {0, 0, 0, 0};       // time in microseconds from rising to falling edge {PD0, PD1, PD2, PD3}
+bool calc_cycles[4] = {false, false, false, false}; // determines when to calculate pulse width {PD0, PD1, PD2, PD3}
+
+uint8_t throttle = 0; // range from 0-20, used for wheel control
+uint8_t turning = 0;  // range from 0-20, used for wheel control
+
+bool alternate_functions[4] = {false, false, false, false}; // indicates whether alternate function is enabled {alt1, alt2, , PD3}
+uint8_t alt_func_count[4] = {0, 0, 0, 0};
+uint8_t alt_func_delay = 2;
+
+uint32_t t1 = 0;
+uint32_t t2 = 0;
+uint32_t t = 69;
+
+void capture_edge_time(int pin);
+void assign_val(int pin);
+void handle_alt_func(void);
+
 // Interrupts ----------------------------------------------------------------------------------------
 void Timer0AIntHandler(void){
     TimerIntDisable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
 
-    printf("PD0 %d    PD1 %d    PD2 %d    PD3 %d    turning %d    throttle %d    t %d    alt0 %d    alt1 %d    alt2 %d    alt3 %d\n",
-           micro_sec[0], micro_sec[1], micro_sec[2], micro_sec[3], turning, throttle, t,
-           alternate_functions[0], alternate_functions[1], alternate_functions[2], alternate_functions[3]);
+//    printf("PD0 %d    PD1 %d    PD2 %d    PD3 %d    turning %d    throttle %d    t %d    alt0 %d    alt1 %d    alt2 %d    alt3 %d\n",
+//           micro_sec[0], micro_sec[1], micro_sec[2], micro_sec[3], turning, throttle, t,
+//           alternate_functions[0], alternate_functions[1], alternate_functions[2], alternate_functions[3]);
 
     handle_alt_func();
 
@@ -108,7 +129,7 @@ void capture_edge_time(int pin){
 }
 
 void assign_val(int pin){
-    uint32_t inc = 40;
+//    uint32_t inc = 40;
     uint32_t base = 1100;
     uint8_t i;
     for (i=0; i<21;i++){
@@ -155,7 +176,7 @@ void handle_alt_func(void){
     }
 }
 
-void main(void)
+void radio(void)
 {
 // Initializations ----------------------------------------------------------------------------------------
 
@@ -236,10 +257,10 @@ void main(void)
     TimerEnable(WTIMER3_BASE, TIMER_A|TIMER_B);
 
     // ----- IDLE LOOP -----
-    while(1)
-    {
-
-    }
+//    while(1)
+//    {
+//
+//    }
 } // end main
 
 
