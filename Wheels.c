@@ -42,7 +42,7 @@ void Wheels_Configure(){
      */
     PWMGenConfigure(PWM0_BASE, PWM_GEN_1, PWM_GEN_MODE_DOWN | PWM_GEN_MODE_NO_SYNC | PWM_GEN_MODE_DBG_RUN);
     PWMGenPeriodSet(PWM0_BASE, PWM_GEN_1, 200000);
-    PWMPulseWidthSet(PWM0_BASE, PWM_OUT_2, 80);
+    PWMPulseWidthSet(PWM0_BASE, PWM_OUT_2, 160);
     PWMOutputState(PWM0_BASE, PWM_OUT_2_BIT, true);
     PWMGenEnable(PWM0_BASE, PWM_GEN_1);
 
@@ -51,7 +51,7 @@ void Wheels_Configure(){
      */
     PWMGenConfigure(PWM0_BASE, PWM_GEN_0, PWM_GEN_MODE_DOWN | PWM_GEN_MODE_NO_SYNC | PWM_GEN_MODE_DBG_RUN);
     PWMGenPeriodSet(PWM0_BASE, PWM_GEN_0, 200000);
-    PWMPulseWidthSet(PWM0_BASE, PWM_OUT_0, 80);
+    PWMPulseWidthSet(PWM0_BASE, PWM_OUT_0, 160);
     PWMOutputState(PWM0_BASE, PWM_OUT_0_BIT, true);
     PWMGenEnable(PWM0_BASE, PWM_GEN_0);
     wheelsRun = 1;
@@ -61,7 +61,9 @@ int Wheels(int wheels_spd_left, int wheels_spd_right, int wheels_dir_left, int w
 {
     if (wheelsRun == 1){
         PWMGenPeriodSet(PWM0_BASE, PWM_GEN_1, wheels_spd_left);
+        PWMPulseWidthSet(PWM0_BASE, PWM_OUT_2, wheels_spd_left / 2);
         PWMGenPeriodSet(PWM0_BASE, PWM_GEN_0, wheels_spd_right);
+        PWMPulseWidthSet(PWM0_BASE, PWM_OUT_0, wheels_spd_right / 2);
         GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_4, wheels_dir_left);
         GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_5, wheels_dir_right);
     }

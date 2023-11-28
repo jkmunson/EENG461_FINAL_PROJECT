@@ -176,7 +176,7 @@ void handle_alt_func(void){
     }
 }
 
-void radio(void)
+int radio(void)
 {
 // Initializations ----------------------------------------------------------------------------------------
 
@@ -261,6 +261,7 @@ void radio(void)
 //    {
 //
 //    }
+    return(0);
 } // end main
 
 
