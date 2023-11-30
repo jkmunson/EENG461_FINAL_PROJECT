@@ -12,7 +12,7 @@
 #include<driverlib/pwm.h>
 #include"driverlib/pin_map.h"
 
-#include "radio.h"
+#include "radioV2.h"
 
 uint32_t r_edge[4];                         // rising edge clock time for {PD0, PD1, PD2, PD3}
 uint32_t f_edge[4];                         // falling edge clock time for {PD0, PD1, PD2, PD3}
@@ -182,7 +182,7 @@ void handle_alt_func(void){
     }
 }
 
-int radio(void)
+int radioV2(void)
 {
 // Initializations ----------------------------------------------------------------------------------------
 
