@@ -11,14 +11,14 @@
 #include<driverlib/adc.h>
 #include<driverlib/pwm.h>
 #include"driverlib/pin_map.h"
-
+#include "sonic_sensor.h"
 #include "radioV2.h"
 
-uint32_t r_edge[4];                         // rising edge clock time for {PD0, PD1, PD2, PD3}
-uint32_t f_edge[4];                         // falling edge clock time for {PD0, PD1, PD2, PD3}
-uint32_t clock_cycles[4] = {0, 0, 0, 0};    // clock cycles from rising to falling edge {PD0, PD1, PD2, PD3}
-uint32_t micro_sec[4] = {0, 0, 0, 0};       // time in microseconds from rising to falling edge {PD0, PD1, PD2, PD3}
-bool calc_cycles[4] = {false, false, false, false}; // determines when to calculate pulse width {PD0, PD1, PD2, PD3}
+uint32_t r_edge[5];                         // rising edge clock time for {PD0, PD1, PD2, PD3}
+uint32_t f_edge[5];                         // falling edge clock time for {PD0, PD1, PD2, PD3}
+uint32_t clock_cycles[5] = {0, 0, 0, 0, 0};    // clock cycles from rising to falling edge {PD0, PD1, PD2, PD3}
+uint32_t micro_sec[5] = {0, 0, 0, 0, 0};       // time in microseconds from rising to falling edge {PD0, PD1, PD2, PD3}
+bool calc_cycles[5] = {false, false, false, false, false}; // determines when to calculate pulse width {PD0, PD1, PD2, PD3}
 
 uint32_t throttle = 0; // range from 0-20, used for wheel control
 uint32_t turning = 0;  // range from 0-20, used for wheel control
@@ -42,11 +42,12 @@ void handle_alt_func(void);
 void Timer0AIntHandler(void){
     TimerIntDisable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
 
-/*
-    printf("PD0 %d    PD1 %d    PD2 %d    PD3 %d    ls %d    rs %d    t %d    alt0 %d    alt1 %d    alt2 %d    alt3 %d\n",
-           micro_sec[0], micro_sec[1], micro_sec[2], micro_sec[3], left_stick_val, right_stick_val, t,
-           alternate_functions[0], alternate_functions[1], alternate_functions[2], alternate_functions[3]);
-*/
+
+//    printf("PD0 %d    PD1 %d    PD2 %d    PD3 %d    ls %d    rs %d    t %d    alt0 %d    alt1 %d    alt2 %d    alt3 %d\n",
+//           micro_sec[0], micro_sec[1], micro_sec[2], micro_sec[3], left_stick_val, right_stick_val, t,
+//           alternate_functions[0], alternate_functions[1], alternate_functions[2], alternate_functions[3]);
+
+//    printf("um_distance %d cm_distance %d\n", um_distance, cm_distance);
 
     handle_alt_func();
 
@@ -126,10 +127,18 @@ void capture_edge_time(int pin){
         x = GPIO_PIN_2;
         timer_base = WTIMER3_BASE;
         timer = TIMER_A;
-    } else {
+    } else if (pin==3){
         x = GPIO_PIN_3;
         timer_base = WTIMER3_BASE;
         timer = TIMER_B;
+    } else{
+        x = GPIO_PIN_6;
+        timer_base = WTIMER5_BASE;
+        timer = TIMER_A;
+    }
+
+    if (pin == 6){
+        pin = 4;
     }
 
     bool PDX_val = GPIOPinRead(GPIO_PORTD_BASE, x);

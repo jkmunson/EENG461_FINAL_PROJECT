@@ -30,11 +30,11 @@
 
 // .:*~*:._.:*~*:._.:*~*:._.:*~*:. Variables  .:*~*:._.:*~*:._.:*~*:._.:*~*:.
 
-extern uint32_t r_edge[4];                         // rising edge clock time for {PD0, PD1, PD2, PD3}
-extern uint32_t f_edge[4];                         // falling edge clock time for {PD0, PD1, PD2, PD3}
-extern uint32_t clock_cycles[4];    // clock cycles from rising to falling edge {PD0, PD1, PD2, PD3}
-extern uint32_t micro_sec[4];       // time in microseconds from rising to falling edge {PD0, PD1, PD2, PD3}
-extern bool calc_cycles[4]; // determines when to calculate pulse width {PD0, PD1, PD2, PD3}
+extern uint32_t r_edge[5];                         // rising edge clock time for {PD0, PD1, PD2, PD3}
+extern uint32_t f_edge[5];                         // falling edge clock time for {PD0, PD1, PD2, PD3}
+extern uint32_t clock_cycles[5];    // clock cycles from rising to falling edge {PD0, PD1, PD2, PD3}
+extern uint32_t micro_sec[5];       // time in microseconds from rising to falling edge {PD0, PD1, PD2, PD3}
+extern bool calc_cycles[5]; // determines when to calculate pulse width {PD0, PD1, PD2, PD3}
 
 extern uint32_t throttle; // range from 0-20, used for wheel control
 extern uint32_t turning;  // range from 0-20, used for wheel control
@@ -48,3 +48,4 @@ extern uint8_t alt_func_delay;
 extern uint32_t t1;
 extern uint32_t t2;
 extern uint32_t t;
+

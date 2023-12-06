@@ -5,5 +5,5 @@
 #define constant 14
 #define WTACCP0_PD6 0x7000000
 
-uint32_t um_distance;
-uint32_t cm_distance;
+extern uint32_t um_distance;
+extern uint32_t cm_distance;

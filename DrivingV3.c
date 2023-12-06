@@ -14,9 +14,9 @@
 #include <driverlib/pwm.h>
 #include <WheelsV2.h>
 
-bool stop;
+bool stop = false;
 int32_t speedLeft, speedRight, pwmLeft, pwmRight, absLeft, absRight, directionLeft, directionRight;
-int32_t maxSpeed = 10000;
+int32_t maxSpeed = 100;
 int32_t DZ = 100;
 
 int DrivingV3(left, right, distance, alternate_function)
@@ -27,14 +27,24 @@ int DrivingV3(left, right, distance, alternate_function)
     absRight = abs (right - DZ );
 
 
-    if (distance <= 200000){
+    if (distance <= 300000){
+        GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_7, 1<<7);
+        GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_6, 0<<6);
+        GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1, 0<<1);
         pwmLeft  = 0;
         pwmRight = 0;
         stop = true;
     }
 
     if (alternate_function == true) {
+        GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_7, 0<<7);
+        GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_6, 0<<6);
+        GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1, 1<<1);
         stop = false;
+    }else if (stop == false & alternate_function == false){
+        GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_7, 0<<7);
+        GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_6, 1<<6);
+        GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1, 0<<1);
     }
 
     if ( stop == true){
@@ -46,12 +56,12 @@ int DrivingV3(left, right, distance, alternate_function)
         if ( absLeft <= 10 ){
             pwmLeft = 0;
         } else{
-            pwmLeft = maxSpeed + 100 * (100 - absLeft);
+            pwmLeft = maxSpeed + 10 * (100 - absLeft);
         }
         if ( absRight <= 10 ){
             pwmRight = 0;
         } else{
-            pwmRight = maxSpeed + 100 * (100 - absRight);
+            pwmRight = maxSpeed + 10 * (100 - absRight);
         }
     }
 

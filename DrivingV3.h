@@ -9,7 +9,7 @@
 #define DRIVINGV3_H_
 
 
-extern int DrivingV3(int left, int right, int distance, bool alternate_functions[1]);
+extern int DrivingV3(int left, int right, int distance, bool alternate_functions);
 
 
 #endif /* DRIVINGV3_H_ */

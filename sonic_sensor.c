@@ -1,6 +1,23 @@
-#include 'sonic_sensor.h'
-#include 'radioV2.c'
+#include<stdint.h>
+#include<stdbool.h>
+#include<math.h>
+#include<inc/hw_memmap.h>
+#include<inc/hw_gpio.h>
+#include<inc/tm4c123gh6pm.h>
+#include<inc/hw_timer.h>
+#include<driverlib/gpio.h>
+#include<driverlib/sysctl.h>
+#include<driverlib/timer.h>
+#include<driverlib/adc.h>
+#include<driverlib/pwm.h>
+#include"driverlib/pin_map.h"
+#include "sonic_sensor.h"
+#include "radioV2.h"
 
+uint32_t um_distance;
+uint32_t cm_distance;
+
+void capture_edge_time(int pin);
 
 void WTimer5AIntHandler(void){
     TimerIntClear(WTIMER5_BASE, TIMER_CAPA_EVENT); // acknowledge interrupt
@@ -11,7 +28,7 @@ void WTimer5AIntHandler(void){
     cm_distance = um_distance / 10000;
 }
 
-void main(void)
+void sonic_sensor(void)
 {
     // INITIALIZATIONS -------------------------
     // Peripherals
@@ -57,5 +74,5 @@ void main(void)
 
     // Enable timers
     TimerEnable(WTIMER5_BASE, TIMER_A);
-
+    return(0);
 } // end main
