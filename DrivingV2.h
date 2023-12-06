@@ -8,7 +8,7 @@
 #ifndef DRIVINGV2_H_
 #define DRIVINGV2_H_
 
-extern int DrivingV2(int left, int right);
+extern int DrivingV2(int left, int right, int angle, bool function);
 
 
 
