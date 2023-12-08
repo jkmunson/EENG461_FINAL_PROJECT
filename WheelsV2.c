@@ -56,23 +56,23 @@ void Wheels_Configure(){
     wheelsRun = 1;
 }
 
-int WheelsV2(int wheels_spd_left, int wheels_spd_right, int wheels_dir_left, int wheels_dir_right)
+int WheelsV2(int wheels_spd_right, int wheels_spd_left, int wheels_dir_right, int wheels_dir_left)
 {
     if (wheelsRun == 1){
 
-        //setting B4
-        PWMGenPeriodSet(PWM0_BASE, PWM_GEN_1, wheels_spd_left);
-        PWMPulseWidthSet(PWM0_BASE, PWM_OUT_2, wheels_spd_left / 2);
+        //setting B4 period, 50% duty cycle
+        PWMGenPeriodSet(PWM0_BASE, PWM_GEN_1, wheels_spd_right);
+        PWMPulseWidthSet(PWM0_BASE, PWM_OUT_2, wheels_spd_right / 2);
         PWMOutputState(PWM0_BASE, PWM_OUT_2_BIT, true);
-        //setting A5
-        GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_5, wheels_dir_left);
+        //setting A5 pin for direction
+        GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_5, wheels_dir_right);
 
-        //setting B6
-        PWMGenPeriodSet(PWM0_BASE, PWM_GEN_0, wheels_spd_right);
-        PWMPulseWidthSet(PWM0_BASE, PWM_OUT_0, wheels_spd_right / 2);
+        //setting B6 period, 50% duty cycle
+        PWMGenPeriodSet(PWM0_BASE, PWM_GEN_0, wheels_spd_left);
+        PWMPulseWidthSet(PWM0_BASE, PWM_OUT_0, wheels_spd_left / 2);
         PWMOutputState(PWM0_BASE, PWM_OUT_0_BIT, true);
-        //setting A4
-        GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_4, wheels_dir_right);
+        //setting A4 pin for direction
+        GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_4, wheels_dir_left);
 
     }
     else{

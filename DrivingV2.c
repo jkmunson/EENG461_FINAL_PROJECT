@@ -19,8 +19,6 @@
 int32_t pwmLeft, pwmRight, absLeft, absRight, directionLeft, directionRight;
 int32_t maxSpeed = 10000;
 int32_t DZ = 100;
-int16_t receivedS;
-int8_t received;
 
 int DrivingV2(left, right, function){
     static int8_t angle;
@@ -30,15 +28,14 @@ int DrivingV2(left, right, function){
         absLeft = abs( left - DZ );
 
         //Get data from UART
-        while(UARTCharsAvail(UART0_BASE)){
+        do{
             UARTRxErrorClear(UART0_BASE);
             int8_t received = UARTCharGet(UART0_BASE);
             if (UARTRxErrorGet(UART0_BASE)) continue;
             angle = received;
-            receivedS += angle;
-            angle = receivedS / 2;
-        }
-        printf("angle %d", angle);
+        }while(UARTCharsAvail(UART0_BASE));
+
+        //printf("angle %d", angle);
         //If left stick is in the dead zone set all values for WheelsV2 to 0
         if ( absLeft <= 10 ){
             pwmLeft = 0;
@@ -49,15 +46,15 @@ int DrivingV2(left, right, function){
         else{
 
             //Will turn in place toward the left at a speed determined by the controllers left stick
-            if ( angle <= -120 ){
+            if ( angle <= -85 ){
                 pwmLeft = maxSpeed + 100 * ( 100 - absLeft );
                 pwmRight = maxSpeed + 100 * ( 100 - absLeft );
-                directionRight = 0<<5;
-                directionLeft = 0<<4;
+                directionRight = 1<<5;
+                directionLeft = 1<<4;
             }
 
             //Will turn in place toward the right at a speed determined by the controllers left stick
-            else if ( angle >= 120 ){
+            else if ( angle >= 85 ){
                 pwmLeft = maxSpeed + 100 * ( 100 - absLeft );
                 pwmRight = maxSpeed + 100 * ( 100 - absLeft );
                 directionRight = 1<<5;
@@ -66,7 +63,7 @@ int DrivingV2(left, right, function){
 
             //If angle received is less than -9 reduce the speed of the left side wheels
             else if ( angle < -9 ){
-                pwmLeft = maxSpeed + 100 * ( 100 - absLeft + abs(angle) );
+                pwmLeft = maxSpeed + 100 * ( 100 - absLeft + 3 * abs(angle) );
                 pwmRight = maxSpeed + 100 * ( 100 - absLeft );
                 directionRight = 0<<5;
                 directionLeft = 1<<4;
@@ -75,7 +72,7 @@ int DrivingV2(left, right, function){
             //If angle received is greater than 9 reduce the speed of the right side wheels
             else if ( angle > 9 ){
                 pwmLeft = maxSpeed + 100 * ( 100 - absLeft );
-                pwmRight = maxSpeed + 100 * ( 100 - absLeft + abs(angle) );
+                pwmRight = maxSpeed + 100 * ( 100 - absLeft + 3 * abs(angle) );
                 directionRight = 0<<5;
                 directionLeft = 1<<4;
             }
@@ -115,8 +112,8 @@ int DrivingV2(left, right, function){
         directionRight = ( right > DZ ) ? 0<<5 : 1<<5;
         directionLeft = ( left > DZ ) ? 1<<4 : 0<<4;
     }
-    printf(" left speed %d right speed %d left dir %d right dir %d alt0 %d\n",
-           pwmLeft, pwmRight, directionLeft, directionRight, alternate_functions[0]);
+    //printf("left speed %d right speed %d left dir %d right dir %d alt0 %d\n",
+           //pwmLeft, pwmRight, directionLeft, directionRight, alternate_functions[0]);
     //Call WheelsV2 and provide necessary values
     WheelsV2(pwmRight, pwmLeft, directionRight, directionLeft);
     return 0;
